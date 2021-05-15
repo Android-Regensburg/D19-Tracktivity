@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Tracktivity</string>
+    <string name="app_tag_line">Do something every day</string>
+    <string name="app_description">On green days you reached your goals, on red days you missed.</string>
+</resources>
