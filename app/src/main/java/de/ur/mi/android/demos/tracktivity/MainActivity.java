@@ -2,10 +2,8 @@ package de.ur.mi.android.demos.tracktivity;
 
 import android.os.Bundle;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,15 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Arrays;
 import java.util.List;
 
-import de.ur.mi.android.demos.tracktivity.tracking.Day;
-import de.ur.mi.android.demos.tracktivity.tracking.DayTracker;
-import de.ur.mi.android.demos.tracktivity.ui.DaysAdapter;
-import de.ur.mi.android.demos.tracktivity.ui.DaysViewItemDecoration;
+import de.ur.mi.android.demos.tracktivity.tracking.DailyGoal;
+import de.ur.mi.android.demos.tracktivity.tracking.GoalTracker;
+import de.ur.mi.android.demos.tracktivity.ui.DailyGoalViewDecoration;
+import de.ur.mi.android.demos.tracktivity.ui.DailyGoalsAdapter;
 
-public class MainActivity extends AppCompatActivity implements DayTracker.DayTrackerListener, DaysAdapter.DaysAdapterListener {
+public class MainActivity extends AppCompatActivity implements GoalTracker.GoalTrackerListener, DailyGoalsAdapter.AdapterListener {
 
-    private DayTracker tracker;
-    private DaysAdapter adapter;
+    private GoalTracker tracker;
+    private DailyGoalsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements DayTracker.DayTra
     }
 
     private void initTracker() {
-        tracker = new DayTracker(this);
+        tracker = new GoalTracker(getApplicationContext(), this);
     }
 
     private void initUI() {
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements DayTracker.DayTra
         String originalText = view.getText().toString();
         SpannableStringBuilder sb = new SpannableStringBuilder();
         sb.append(originalText);
-        for(int i = 0; i < words.size(); i++) {
+        for (int i = 0; i < words.size(); i++) {
             int startSpanAt = originalText.indexOf(words.get(i));
             int endSpanAt = startSpanAt + words.get(i).length();
             sb.setSpan(new ForegroundColorSpan(colorIds.get(i)), startSpanAt, endSpanAt, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -63,22 +61,21 @@ public class MainActivity extends AppCompatActivity implements DayTracker.DayTra
 
 
     private void initDaysView() {
-        adapter = new DaysAdapter(this);
-        adapter.setTrackedDays(tracker.getTrackedDaysInCurrentMonth());
+        adapter = new DailyGoalsAdapter(this);
+        adapter.setTrackedGoals(tracker.getGoalStatesForThisMonth());
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.calendar);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 7));
-        recyclerView.addItemDecoration(new DaysViewItemDecoration());
+        recyclerView.addItemDecoration(new DailyGoalViewDecoration());
         recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onTrackerUpdated() {
-        adapter.setTrackedDays(tracker.getTrackedDaysInCurrentMonth());
+        adapter.setTrackedGoals(tracker.getGoalStatesForThisMonth());
     }
 
     @Override
-    public void onDaySelected(Day day) {
-        Log.d("Tracktivity", day.state.name());
-        tracker.switchStateForDay(day);
+    public void onDailyGoalSelected(DailyGoal day) {
+        tracker.switchGoalStateFor(day);
     }
 }
