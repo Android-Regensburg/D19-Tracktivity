@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements GoalTracker.GoalT
     }
 
     private void initTracker() {
-        tracker = new GoalTracker(getApplicationContext(), this);
+        tracker = new GoalTracker(this);
     }
 
     private void initUI() {
