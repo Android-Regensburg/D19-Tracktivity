@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<View xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="20dp"
     android:layout_height="20dp"
-    android:background="@drawable/day_view_background_unknown">
+    android:background="@drawable/day_view_background_unknown"
+    android:gravity="center"
+    android:textColor="@color/white"
+    android:textAlignment="center"
+    android:fontFamily="sans-serif-medium">
 
-</View>
+</TextView>

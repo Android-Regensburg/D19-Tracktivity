@@ -3,6 +3,7 @@ package de.ur.mi.android.demos.tracktivity.ui;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,6 +75,7 @@ public class DailyGoalsAdapter extends RecyclerView.Adapter<DailyGoalViewHolder>
         if (selectedDay > LocalDate.now().getDayOfMonth()) {
             backgroundResourceForDayState = R.drawable.day_view_background_future;
         }
+        ((TextView) holder.itemView).setText(String.valueOf(selectedDay));
         holder.itemView.setBackgroundResource(backgroundResourceForDayState);
     }
 
