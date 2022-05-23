@@ -1,5 +1,6 @@
 package de.ur.mi.android.demos.tracktivity.ui;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,15 @@ public class DailyGoalsAdapter extends RecyclerView.Adapter<DailyGoalViewHolder>
         trackedGoals = new DailyGoal[0];
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setTrackedGoals(DailyGoal[] trackedGoals) {
         this.trackedGoals = trackedGoals;
+        /*
+         * Wir nutzen hier bewusst nicht die vorgeschlagenen Methoden zur partiellen Aktualisierung
+         * des Views um ein möglicherweise falsch interpretierte Animation im UI zu verhindern. Die
+         * beste Lösung wäre ein Diff des aktuellen und des neu übergebenen Arrays um dann die Listener
+         * über die konkreten Veränderungen innerhalb der Liste zu informieren.
+         */
         this.notifyDataSetChanged();
     }
 
@@ -43,15 +51,15 @@ public class DailyGoalsAdapter extends RecyclerView.Adapter<DailyGoalViewHolder>
     @NonNull
     @Override
     public DailyGoalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        DailyGoalViewHolder vh = createViewHolderForType(parent, viewType);
-        return vh;
+        return createViewHolderForType(parent, viewType);
     }
 
     private DailyGoalViewHolder createViewHolderForType(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_day, parent, false);
         ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
-        layoutParams.width = (int) ((parent.getWidth() / 7) * 0.7);
-        layoutParams.height = layoutParams.width;
+        int viewHolderSquareSize = (int) ((parent.getWidth() / 7) * 0.7);
+        layoutParams.width = viewHolderSquareSize;
+        layoutParams.height = viewHolderSquareSize;
         v.setLayoutParams(layoutParams);
         return new DailyGoalViewHolder(v, this);
     }
